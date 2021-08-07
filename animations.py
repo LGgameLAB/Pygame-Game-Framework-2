@@ -195,6 +195,8 @@ class animation2:
             self.dir = 'd'
         elif self.sprite.dir.y < 0:
             self.dir = 'u'
+        else:
+            self.dir = 'r'
 
     def scale(self, x, y=None):
         if y==None:

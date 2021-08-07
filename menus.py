@@ -9,9 +9,9 @@ def compendiumMenu(game):
     returnButton = button(game, (winWidth-240, 70), text="Return", center = True)
     #menuItem(game, (x, y), asset(''), desc='', text=''),
     itemCompendium = [
-        menuItem(game, (x, y), asset('player/sw1.png'), zoomMin = 1.5, zoomMax = 2.8, desc='You take on the role of a brave sword who dares to save his kingdom from terrorizing monsters. The sword represents your being and your weapon joined together as one. Use yourgame wisely', text='Sword'),
+        menuItem(game, (x, y), asset('player/sw1.png'), zoomMin = 1.5, zoomMax = 2.8, desc='You take on the role of a brave sword who dares to save his kingdom from terrorizing monsters. The sword represents your being and your weapon joined together as one. Use yourself wisely', text='Sword'),
         menuItem(game, (x+stepX, y), asset('objects/redPole.png'), zoomMax = 1.5, desc="This game uses the mouse to direct yourgame (The sword if you haven't gotten that) and upon a click you will be launched in the direction of its pointer. To advance to each level, the player must reach the stone pole bearing the red magic AFTER DEFEATING ALL THE MONSTERS! Press C to toggle the camera between the end post view and the player view. Also press R to restart an attempt on a level and P to pause. Good luck on your journey!", text='Know ur 101s'),
-        menuItem(game, (x+stepX*2, y), asset('objects/greenPole.png'), zoomMax = 1.5, desc='This rebounder pole shows up with a green magical aura. This represents your only means of changing direction in this game. Make sure you you aim yourgame well ;)', text='Rebounder pole'),
+        menuItem(game, (x+stepX*2, y), asset('objects/greenPole.png'), zoomMax = 1.5, desc='This rebounder pole shows up with a green magical aura. This represents your only means of changing direction in this game. Make sure you you aim yourself well ;)', text='Rebounder pole'),
     ]
     comps = pygame.sprite.Group(itemCompendium, returnButton)
     descText = ''
@@ -139,5 +139,57 @@ def main(game):
         if keys[keySet['start']]:
             game.loadLevel(1)
             break
+        
+        pygame.display.update()
+
+def gameOver(game):
+    restartButton = button(game, (winWidth/2, winHeight/2), text="Back to Menu", center = True, colors = (colors.yellow, colors.white))
+    buttons = pygame.sprite.Group(restartButton)
+    while True:
+        pygame.time.delay(50)
+        
+        game.runEvents()
+        game.refresh()
+
+        buttons.update()
+        for btn in buttons:
+            game.win.blit(btn.image, btn.rect)
+
+        if restartButton.clicked:
+            game.reset()
+            break
+        
+        
+        text1 = game.gameOverFont.render('Game Over', game.antialiasing, colors.dark(colors.red, 20))
+        text2 = fonts['1'].render("Score: " + str(game.points), game.antialiasing, (colors.yellow))
+        
+        game.win.blit(text1, (50,50))
+        game.win.blit(text2, (800, 70))
+        
+        pygame.display.update()
+
+def victoryLoop(game):
+    menuButton = button(game, (winWidth/2, winHeight/2), text="Back to Menu", center = True, colors = (colors.yellow, colors.white))
+    buttons = pygame.sprite.Group(menuButton)
+    game.mixer.playFx('yay')
+    while True:
+        pygame.time.delay(50)
+        
+        game.runEvents()
+        game.refresh()
+
+        buttons.update()
+        for btn in buttons:
+            game.win.blit(btn.image, btn.rect)
+
+        if menuButton.clicked:
+            game.reset()
+            break
+        
+        text1 = game.victoryFont.render('Victory', game.antialiasing, colors.yellow, 20)
+        text2 = fonts['1'].render("Score: " + str(game.points), game.antialiasing, (colors.yellow))
+        
+        game.win.blit(text2, (800, 70))
+        game.win.blit(text1, (winWidth/2 - text1.get_width()/2 ,30))
         
         pygame.display.update()

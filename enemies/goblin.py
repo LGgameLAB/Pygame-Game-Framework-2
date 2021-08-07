@@ -9,7 +9,7 @@ from player import *
 from stgs import *
 
 from . import enemy
-
+from .eBullet import enemyBullet
 
 class goblin(enemy.Enemy):
 
@@ -21,14 +21,12 @@ class goblin(enemy.Enemy):
             'u': asset('enemies/goblinU.png')}
         self.vertical = False
         self.evil = False
-        for k, v in objT.properties.items():
-            self.__dict__[k] = v
 
+        super().__init__(game, objT, health = 2, imgSheet = imgSheet)
         if self.vertical:
-            startDir = (0, random.randrange(-1, 1+1, 2))
+            self.dir = pygame.Vector2(0, random.randrange(-1, 1+1, 2))
         else:
-            startDir = (random.randrange(-1, 1+1, 2), 0)
-        super().__init__(game, objT, health = 2, imgSheet = imgSheet, startDir = startDir)
+            self.dir = pygame.Vector2(random.randrange(-1, 1+1, 2), 0)
         self.spawnLoc = pygame.Vector2(objT.x, objT.y)
         self.moveRadius = 100
         self.vel = 3
@@ -37,16 +35,6 @@ class goblin(enemy.Enemy):
         self.lastShoot = pygame.time.get_ticks()
         self.shootRate = random.randrange(2500, 5000, 50)
     
-    def collideCheck(self, vector):
-        returnVal = False
-    
-        testRect = pygame.Rect(round(vector.x), round(vector.y), self.rect.width, self.rect.height)
-        for obj in self.game.colliders:
-            if not isinstance(obj, (mPlatform)):
-                if testRect.colliderect(obj.rect):
-                    returnVal = True
-        
-        return returnVal
     
     def move(self):
         testVec = pygame.Vector2((self.pos.x, self.pos.y))

@@ -398,56 +398,10 @@ class game:
         menus.main(self)
 
     def victoryLoop(self):
-        menuButton = button(self, (winWidth/2, winHeight/2), text="Back to Menu", center = True, colors = (colors.yellow, colors.white))
-        buttons = pygame.sprite.Group(menuButton)
-        self.mixer.playFx('yay')
-        while True:
-            pygame.time.delay(50)
-            
-            self.runEvents()
-            self.refresh()
-
-            buttons.update()
-            for btn in buttons:
-                self.win.blit(btn.image, btn.rect)
-
-            if menuButton.clicked:
-                self.reset()
-                break
-            
-            text1 = self.victoryFont.render('Victory', self.antialiasing, colors.yellow, 20)
-            text2 = fonts['1'].render("Score: " + str(self.points), self.antialiasing, (colors.yellow))
-            
-            self.win.blit(text2, (800, 70))
-            self.win.blit(text1, (winWidth/2 - text1.get_width()/2 ,30))
-            
-            pygame.display.update()
+        menus.victoryLoop(self)
 
     def gameOver(self):
-        restartButton = button(self, (winWidth/2, winHeight/2), text="Back to Menu", center = True, colors = (colors.yellow, colors.white))
-        buttons = pygame.sprite.Group(restartButton)
-        while True:
-            pygame.time.delay(50)
-            
-            self.runEvents()
-            self.refresh()
-
-            buttons.update()
-            for btn in buttons:
-                self.win.blit(btn.image, btn.rect)
-
-            if restartButton.clicked:
-                self.reset()
-                break
-            
-            
-            text1 = self.gameOverFont.render('Game Over', self.antialiasing, colors.dark(colors.red, 20))
-            text2 = fonts['1'].render("Score: " + str(self.points), self.antialiasing, (colors.yellow))
-            
-            self.win.blit(text1, (50,50))
-            self.win.blit(text2, (800, 70))
-            
-            pygame.display.update()
+        menus.gameOver(self)
 
     def refresh(self, bg = False):
         if bg:

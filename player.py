@@ -7,6 +7,7 @@ import pygame
 from animations import *
 from objects import *
 from stgs import *
+import fx
 
 
 #### Player object ####
